@@ -1,3 +1,3 @@
 # StoryMaps Bookmarklets
 
-Please see the GitHub Pages.
+Please checkout the [GitHub Pages](https://yankuanz.github.io/storymaps-bookmarklets/).
