@@ -68,21 +68,19 @@
         </li>
         <li>
           drag each bookmarklet below into your bookmark bar:
-          <dl>
-            <dt>
-              <a id="data-viewer">SM Data Viewer</a>
-            </dt>
-            <dt>
-              <a id="item-viewer">SM Item Viewer</a>
-            </dt>
-          </dl>
+          <dl id="bookmarklets"></dl>
         </li>
       </ol>
-      <p>To activate the bookmarklet,</p>
+      <p>To activate a bookmarklet,</p>
       <ol>
         <li>simply navigate to your desired StoryMaps item viewer page</li>
         <li>
-          and then click on the corresponding bookmarklet in the bookmarks bar.
+          and then click on a bookmarklet in the bookmarks bar, and it will take
+          you to a JSON page in a new tab
+        </li>
+        <li>
+          and now you can click another bookmarklet on the JSON page that just
+          opened, too!
         </li>
       </ol>
       <p>
@@ -93,10 +91,23 @@
     </article>
   </body>
   <script>
-    const jsForDataViewer =
-      'window.open(`https://www.arcgis.com/sharing/rest/content/items/${window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]}/data?f=json`, "_blank")';
-    const jsForItemViewer =
-      'window.open(`https://www.arcgis.com/sharing/rest/content/items/${window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]}?f=json`, "_blank")';
+    const configs = [
+      {
+        name: "SM Data",
+        jsCode:
+          'window.open(`https://www.arcgis.com/sharing/rest/content/items/${window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]}/data?f=json`, "_blank")',
+      },
+      {
+        name: "SM Item",
+        jsCode:
+          'window.open(`https://www.arcgis.com/sharing/rest/content/items/${window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]}?f=json`, "_blank")',
+      },
+      {
+        name: "SM Resources",
+        jsCode:
+          'window.open(`https://www.arcgis.com/sharing/rest/content/items/${window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]}/resources?f=json`, "_blank")',
+      },
+    ];
 
     const bookmarkletify = (js) => {
       const encodedIIFE = encodeURI(`(()=>{${js}})()`);
@@ -104,10 +115,19 @@
     };
 
     document.addEventListener("DOMContentLoaded", () => {
-      document.querySelector("#data-viewer").href =
-        bookmarkletify(jsForDataViewer);
-      document.querySelector("#item-viewer").href =
-        bookmarkletify(jsForItemViewer);
+      const container = document.querySelector("dl#bookmarklets");
+
+      // populate <dt><a href="...">...</a></dt> elements
+      configs.forEach(({ name, jsCode }) => {
+        const anchorElement = document.createElement("a");
+        anchorElement.textContent = name;
+        anchorElement.setAttribute("href", bookmarkletify(jsCode));
+
+        const dtElement = document.createElement("dt");
+        dtElement.appendChild(anchorElement);
+
+        container.appendChild(dtElement);
+      });
     });
   </script>
 </html>
