@@ -98,18 +98,26 @@
       {
         name: "SM Data",
         func: () => {
-          window.open(
-            `https://${
-              window.location.host.includes("dev")
-                ? "devext"
-                : window.location.host.includes("qa")
-                ? "qaext"
-                : "www"
-            }.arcgis.com/sharing/rest/content/items/${
-              window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]
-            }/resources/published_data.json?f=json`,
-            "_blank"
-          );
+          const url = `https://${
+            window.location.host.includes("dev")
+              ? "devext"
+              : window.location.host.includes("qa")
+              ? "qaext"
+              : "www"
+          }.arcgis.com/sharing/rest/content/items/${
+            window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]
+          }/resources/published_data.json?f=json`;
+          const handle = window.open(url, "_blank");
+          fetch(url)
+            .then((r) => r.json())
+            .then(({ error }) => {
+              if (error) {
+                handle.location.href = url.replace(
+                  "resources/published_data.json",
+                  "data"
+                );
+              }
+            });
         },
       },
       {
