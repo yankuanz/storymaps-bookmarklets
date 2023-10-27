@@ -85,8 +85,11 @@
       </ol>
       <p>
         Note: The StoryMaps item has be to already <em>publicly</em> published,
-        on <a href="https://storymaps.arcgis.com/">storymaps.arcgis.com</a> or
-        <a href="https://storymaps.com/">storymaps.com</a>.
+        on
+        <a href="https://storymaps.arcgis.com/">storymaps.arcgis.com</a>
+        (all tiers) or
+        <a href="https://storymaps.com/">storymaps.com</a>
+        (all tiers).
       </p>
     </article>
   </body>
@@ -96,7 +99,13 @@
         name: "SM Data",
         func: () => {
           window.open(
-            `https://www.arcgis.com/sharing/rest/content/items/${
+            `https://${
+              window.location.host.includes("dev")
+                ? "devext"
+                : window.location.host.includes("qa")
+                ? "qaext"
+                : "www"
+            }.arcgis.com/sharing/rest/content/items/${
               window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]
             }/resources/published_data.json?f=json`,
             "_blank"
@@ -107,7 +116,13 @@
         name: "SM Item",
         func: () => {
           window.open(
-            `https://www.arcgis.com/sharing/rest/content/items/${
+            `https://${
+              window.location.host.includes("dev")
+                ? "devext"
+                : window.location.host.includes("qa")
+                ? "qaext"
+                : "www"
+            }.arcgis.com/sharing/rest/content/items/${
               window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]
             }?f=json`,
             "_blank"
@@ -118,7 +133,13 @@
         name: "SM Resources",
         func: () => {
           window.open(
-            `https://www.arcgis.com/sharing/rest/content/items/${
+            `https://${
+              window.location.host.includes("dev")
+                ? "devext"
+                : window.location.host.includes("qa")
+                ? "qaext"
+                : "www"
+            }.arcgis.com/sharing/rest/content/items/${
               window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]
             }/resources?f=json`,
             "_blank"
