@@ -108,16 +108,18 @@
             window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]
           }/resources/published_data.json?f=json`;
           const handle = window.open(url, "_blank");
-          fetch(url)
-            .then((r) => r.json())
-            .then(({ error }) => {
-              if (error) {
-                handle.location.href = url.replace(
-                  "resources/published_data.json",
-                  "data"
-                );
-              }
-            });
+          setTimeout(() => {
+            fetch(url)
+              .then((r) => r.json())
+              .then(({ error }) => {
+                if (error?.code === 404) {
+                  handle.location.href = url.replace(
+                    "resources/published_data.json",
+                    "data"
+                  );
+                }
+              });
+          }, 100);
         },
       },
       {
