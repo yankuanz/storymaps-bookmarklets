@@ -94,23 +94,41 @@
     const configs = [
       {
         name: "SM Data",
-        jsCode:
-          'window.open(`https://www.arcgis.com/sharing/rest/content/items/${window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]}/resources/published_data.json?f=json`, "_blank")',
+        func: () => {
+          window.open(
+            `https://www.arcgis.com/sharing/rest/content/items/${
+              window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]
+            }/resources/published_data.json?f=json`,
+            "_blank"
+          );
+        },
       },
       {
         name: "SM Item",
-        jsCode:
-          'window.open(`https://www.arcgis.com/sharing/rest/content/items/${window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]}?f=json`, "_blank")',
+        func: () => {
+          window.open(
+            `https://www.arcgis.com/sharing/rest/content/items/${
+              window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]
+            }?f=json`,
+            "_blank"
+          );
+        },
       },
       {
         name: "SM Resources",
-        jsCode:
-          'window.open(`https://www.arcgis.com/sharing/rest/content/items/${window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]}/resources?f=json`, "_blank")',
+        func: () => {
+          window.open(
+            `https://www.arcgis.com/sharing/rest/content/items/${
+              window.location.pathname.match(/[a-zA-Z0-9]{32}/)?.[0]
+            }/resources?f=json`,
+            "_blank"
+          );
+        },
       },
     ];
 
-    const bookmarkletify = (js) => {
-      const encodedIIFE = encodeURI(`(()=>{${js}})()`);
+    const bookmarkletify = (func) => {
+      const encodedIIFE = encodeURI(`(${func.toString()})()`);
       return `javascript:${encodedIIFE}`;
     };
 
@@ -118,10 +136,10 @@
       const container = document.querySelector("dl#bookmarklets");
 
       // populate <dt><a href="...">...</a></dt> elements
-      configs.forEach(({ name, jsCode }) => {
+      configs.forEach(({ name, func }) => {
         const anchorElement = document.createElement("a");
         anchorElement.textContent = name;
-        anchorElement.setAttribute("href", bookmarkletify(jsCode));
+        anchorElement.setAttribute("href", bookmarkletify(func));
 
         const dtElement = document.createElement("dt");
         dtElement.appendChild(anchorElement);
